@@ -1,17 +1,9 @@
-/*
-   Data can be retrieved from the API either using callbacks (as in versions < 1.0)
-   or using a new promise-based API. The promise-based API returns the raw Axios
-   request promise.
- */
-
 const { Octokit } = require("@octokit/rest");
+const fs = require('fs')
 
-const OAUTH_TOKEN = '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';
+let oauth_token = '';
+
 const USERNAME = 'abhineshgour';
-
-const octokit = new Octokit({
-    auth: OAUTH_TOKEN,
-});
 
 const authors = {
     group1: [
@@ -44,7 +36,7 @@ const reviewers = {
     },
 };
 
-function updateReviewers(prNumber, reviewers) { console.log(prNumber, reviewers)
+function updateReviewers(prNumber, reviewers, octokit) {
     return octokit.rest.pulls.requestReviewers({
         owner: 'avinetworks',
         repo: "avi-dev",
@@ -80,9 +72,15 @@ function getReviewers(author = USERNAME) {
 }
 
 function assign(prNumber, author) { console.log(author)
+    oauth_token = fs.readFileSync('./auth.txt', 'utf8');
+
+    const octokit = new Octokit({
+        auth: oauth_token,
+    });
+    
     const reviewers = getReviewers(author);
 
-    return updateReviewers(+prNumber, reviewers);
+    return updateReviewers(+prNumber, reviewers, octokit);
 }
 
 module.exports = {
