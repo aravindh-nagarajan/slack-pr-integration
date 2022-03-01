@@ -1,10 +1,10 @@
-import express from 'express';
+const express = require('express');
 
-import bodyParser from 'body-parser';
+const bodyParser = require('body-parser');
 
-import {
+const {
   updateReviewers,
-} from './github-pr-script.mjs';
+} = require('./github-pr-script.js');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));

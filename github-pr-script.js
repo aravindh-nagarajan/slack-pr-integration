@@ -4,7 +4,7 @@
    request promise.
  */
 
-import { Octokit } from "@octokit/rest";
+const { Octokit } = require("@octokit/rest");
 
 const OAUTH_TOKEN = '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';
 const USERNAME = 'abhineshgour';
@@ -79,7 +79,7 @@ function getReviewers() {
     return prReviewers;
 }
 
-export {
+module.exports = {
     getReviewers,
     updateReviewers,
-}
+};
