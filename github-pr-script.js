@@ -6,7 +6,7 @@
 
 const { Octokit } = require("@octokit/rest");
 
-const OAUTH_TOKEN = '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';
+const OAUTH_TOKEN = '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';
 const USERNAME = 'abhineshgour';
 
 const octokit = new Octokit({
@@ -44,8 +44,8 @@ const reviewers = {
     },
 };
 
-function updateReviewers(prNumber, reviewers) {
-    octokit.rest.pulls.requestReviewers({
+function updateReviewers(prNumber, reviewers) { console.log(prNumber, reviewers)
+    return octokit.rest.pulls.requestReviewers({
         owner: 'avinetworks',
         repo: "avi-dev",
         pull_number: prNumber,
@@ -53,15 +53,15 @@ function updateReviewers(prNumber, reviewers) {
     });
 }
 
-function getReviewers() {
-    const group = authors.group1.includes(USERNAME) ? 'group1' : 'group2';
+function getReviewers(author = USERNAME) {
+    const group = authors.group1.includes(author) ? 'group1' : 'group2';
     const reviewGroup = reviewers[group];
     const prReviewers = [];
 
     let count = 0;
 
     reviewGroup.l1.forEach(r => {
-        if (r !== USERNAME && count <= 2) {
+        if (r !== author && count <= 2) {
             prReviewers.push(r);
 
             count++;
@@ -69,7 +69,7 @@ function getReviewers() {
     });
 
     reviewGroup.l2.forEach(r => {
-        if (r !== USERNAME) {
+        if (r !== author) {
             prReviewers.push(r);
         }
     });
@@ -79,7 +79,12 @@ function getReviewers() {
     return prReviewers;
 }
 
+function assign(prNumber, author) { console.log(author)
+    const reviewers = getReviewers(author);
+
+    return updateReviewers(+prNumber, reviewers);
+}
+
 module.exports = {
-    getReviewers,
-    updateReviewers,
+    assign,
 };
