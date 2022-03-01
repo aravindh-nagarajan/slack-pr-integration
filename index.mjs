@@ -15,6 +15,10 @@ app.post('/assign', (req, res) => {
   console.log(req.body);
 
   res.send('Hello World!')
+});
+
+app.get('/ping', (req, res) => {
+  res.send('Hello World!')
 })
 
 app.listen(port, () => {
