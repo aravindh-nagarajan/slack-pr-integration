@@ -6,7 +6,7 @@
 
 const { Octokit } = require("@octokit/rest");
 
-const OAUTH_TOKEN = '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';
+const OAUTH_TOKEN = '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';
 const USERNAME = 'abhineshgour';
 
 const octokit = new Octokit({

@@ -16,7 +16,11 @@ app.post('/assign', (req, res) => {
 
   assign(prNumber, author).then(() => {
     res.send('Done');
-  }).catch(() => res.send('Failed'));
+  }).catch((err) => {
+    console.error(err);
+
+    res.send('Failed');
+  });
 });
 
 app.get('/ping', (req, res) => {
