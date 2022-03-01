@@ -75,7 +75,7 @@ function assign(prNumber, author) { console.log(author)
     oauth_token = fs.readFileSync('./auth.txt', 'utf8');
 
     const octokit = new Octokit({
-        auth: oauth_token,
+        auth: oauth_token.trim(),
     });
     
     const reviewers = getReviewers(author);
