@@ -148,6 +148,8 @@ async function assign(prNumber, level = 'l1') {
     console.log(prNumber, author, level)
 
     updateReviewers(+prNumber, reviewers, octokit);
+
+    return reviewers;
 }
 
 module.exports = {

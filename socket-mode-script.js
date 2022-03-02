@@ -9,11 +9,21 @@ const app = new App({
     appToken: process.env.SLACK_APP_TOKEN,
 });
 
+function getReviewersSlackIds(reviewers) {
+    const ids = [];
+
+    reviewers.forEach(r => {
+        ids.push(usernameHash[r]);
+    });
+
+    return ids.join(' ');
+}
+
 /**
  * Handler for assignreviewer command.
  */
 app.command('/assignreviewer', async ({ command, ack, body, client, logger, say }) => {
-    const { text } = command;
+    const { text, user_name: userName } = command;
 
     await ack();
 
@@ -23,24 +33,24 @@ app.command('/assignreviewer', async ({ command, ack, body, client, logger, say 
 
     if (args.length === 2) {
         try {
-            await assign(prNumber, args[1]);
+            const reviewers = await assign(prNumber, args[1]);
 
-            await say(`<https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is submitted for ${args[1].toLocaleUpperCase()} Review. :tada:`);
+            await say(`Hey <@${userName}> !!! <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is submitted for ${args[1].toLocaleUpperCase()} Review. :tada:`);
         } catch(e) {
             logger.error(e);
 
-            await say('Something went wrong, Sorry');
+            await say(`Hey <@${userName}> !!!, Something went wrong, Sorry`);
         }
         
     } else {
-        showLevelSelectionModal(body.trigger_id, client, prNumber, body.channel_id);
+        showLevelSelectionModal(body.trigger_id, client, prNumber, body.channel_id, userName);
     }
 });
 
 /**
  * Opens modal for level selection
  */
-async function showLevelSelectionModal(triggerId, client, prNumber, channelId) {
+async function showLevelSelectionModal(triggerId, client, prNumber, channelId, userName) {
     try {
         await client.views.open({
             trigger_id: triggerId,
@@ -51,7 +61,7 @@ async function showLevelSelectionModal(triggerId, client, prNumber, channelId) {
                     type: 'plain_text',
                     text: 'Level of Review'
                 },
-                private_metadata: `${prNumber} ${channelId}`,
+                private_metadata: `${prNumber} ${channelId} ${userName}`,
                 blocks: [{
                     type: 'section',
                     text: {
@@ -121,6 +131,7 @@ app.view('level_selection', async ({ ack, view, client, body, logger }) => {
 
     const prNumber = +metaData[0];
     const channelId = metaData[1];
+    const userName = metaData[2];
 
     try {
         const { level } = view.state.values;
@@ -131,14 +142,14 @@ app.view('level_selection', async ({ ack, view, client, body, logger }) => {
 
         await client.chat.postMessage({
             channel: channelId,
-            text: `<https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is submitted for ${selectedLevel.toLocaleUpperCase()} Review. :tada:`,
+            text: `Hey <@${userName}> !!! <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is submitted for ${selectedLevel.toLocaleUpperCase()} Review. :tada:`,
         });
     } catch(e) {
         logger.error(e);
          
         await client.chat.postMessage({
             channel: channelId,
-            text: `Something went wrong, Sorry`,
+            text: `Hey <@${userName}> !!!, Something went wrong, Sorry`,
         });
     }
 });
