@@ -3,8 +3,6 @@ const fs = require('fs')
 
 let oauth_token = '';
 
-const USERNAME = 'abhineshgour';
-
 const authors = {
     group1: [
         'shahabh3003', 
@@ -36,6 +34,9 @@ const reviewers = {
     },
 };
 
+/**
+ * Updates reviewers.
+ */
 function updateReviewers(prNumber, reviewers, octokit) {
     return octokit.rest.pulls.requestReviewers({
         owner: 'avinetworks',
@@ -45,11 +46,61 @@ function updateReviewers(prNumber, reviewers, octokit) {
     });
 }
 
-function getReviewers(author = USERNAME) {
+/**
+ * Returns pullrequest info.
+ */
+function getPullRequest(prNumber, octokit) {
+    return octokit.rest.pulls.get({
+        owner: 'avinetworks',
+        repo: "avi-dev",
+        pull_number: prNumber,
+    });
+}
+
+/**
+ * Returns Reviewers.
+ */
+function getReviewers(author, level) {
     const group = authors.group1.includes(author) ? 'group1' : 'group2';
     const reviewGroup = reviewers[group];
-    const prReviewers = [];
+    let prReviewers = [];
 
+    switch(level) {
+        case 'l1': {
+            prReviewers = getL1Reviewers(author, reviewGroup);
+
+            break;
+        }
+
+        case 'l2': {
+            prReviewers = getL2Reviewers(author, reviewGroup);
+
+            break;
+        }
+
+        case 'l3': {
+            prReviewers.push(reviewGroup.l3);
+
+            break;
+        }
+
+        case 'all': {
+            prReviewers = [
+                ...getL1Reviewers(author, reviewGroup),
+                ...getL2Reviewers(author, reviewGroup),
+                reviewGroup.l3,
+            ];
+        }
+    }
+    
+    return prReviewers;
+}
+
+/**
+ * Returns L1 Reviewers.
+ */
+function getL1Reviewers(author, reviewGroup) {
+    const prReviewers = [];
     let count = 0;
 
     reviewGroup.l1.forEach(r => {
@@ -60,27 +111,43 @@ function getReviewers(author = USERNAME) {
         }
     });
 
+    return prReviewers;
+}
+
+/**
+ * Returns L2 Reviewers.
+ */
+function getL2Reviewers(author, reviewGroup) {
+    const prReviewers = [];
+
     reviewGroup.l2.forEach(r => {
         if (r !== author) {
             prReviewers.push(r);
         }
     });
 
-    prReviewers.push(reviewGroup.l3);
-
     return prReviewers;
 }
 
-function assign(prNumber, author) { console.log(author)
+/**
+ * Assigns reviewers to PR.
+ */
+async function assign(prNumber, level = 'l1') {
     oauth_token = fs.readFileSync('./auth.txt', 'utf8');
 
     const octokit = new Octokit({
         auth: oauth_token.trim(),
     });
     
-    const reviewers = getReviewers(author);
+    const { data: pr } = await getPullRequest(prNumber, octokit);
 
-    return updateReviewers(+prNumber, reviewers, octokit);
+    const author = pr.user.login;
+
+    const reviewers = getReviewers(author, level);
+
+    console.log(prNumber, author, level)
+
+    updateReviewers(+prNumber, reviewers, octokit);
 }
 
 module.exports = {

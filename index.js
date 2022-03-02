@@ -12,6 +12,8 @@ app.use(bodyParser.json());
 const port = 3500;
 
 app.post('/assign', (req, res) => {
+  console.log(req.body);
+
   const { prNumber, author } = req.body;
 
   assign(prNumber, author).then(() => {
