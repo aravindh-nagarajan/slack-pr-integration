@@ -51,7 +51,7 @@ app.command('/assignreviewer', async ({ command, ack, body, client, logger, say 
         try {
             const reviewers = await assign(prNumber, args[1]);
 
-            await say(`Hey <@${userName}> !!! <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is submitted for ${args[1].toLocaleUpperCase()} Review. :tada:`);
+            await say(`Hi <@${userName}> !!! <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is submitted for ${args[1].toLocaleUpperCase()} Review.`);
         
             const reviewersIds = getReviewersSlackIds(reviewers);
 
@@ -59,7 +59,7 @@ app.command('/assignreviewer', async ({ command, ack, body, client, logger, say 
                 try {
                     await client.chat.postMessage({
                         channel: `@${r}`,
-                        text: `Hey <@${r}>, <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is waiting for your review`,
+                        text: `Hi <@${r}>, <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is waiting for your review`,
                     });
                 } catch(e) {
                     logger.error(e);
@@ -70,7 +70,7 @@ app.command('/assignreviewer', async ({ command, ack, body, client, logger, say 
         } catch(e) {
             logger.error(e);
 
-            await say(`Hey <@${userName}> !!!, Something went wrong, Sorry`);
+            await say(`Hi <@${userName}> !!!, Something went wrong, Sorry`);
         }
         
     } else {
@@ -173,7 +173,7 @@ app.view('level_selection', async ({ ack, view, client, body, logger }) => {
 
         await client.chat.postMessage({
             channel: channelId,
-            text: `Hey <@${userName}> !!! <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is submitted for ${selectedLevel.toLocaleUpperCase()} Review. :tada:`,
+            text: `Hi <@${userName}> !!! <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is submitted for ${selectedLevel.toLocaleUpperCase()} Review.`,
         });
 
         const reviewersIds = getReviewersSlackIds(reviewers);
@@ -181,7 +181,7 @@ app.view('level_selection', async ({ ack, view, client, body, logger }) => {
         reviewersIds.forEach(async r => {
             await client.chat.postMessage({
                 channel: `@${r}`,
-                text: `Hey <@${r}>, <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is waiting for your review`,
+                text: `Hi <@${r}>, <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is waiting for your review`,
             });
         });
     } catch(e) {
@@ -189,7 +189,7 @@ app.view('level_selection', async ({ ack, view, client, body, logger }) => {
          
         await client.chat.postMessage({
             channel: channelId,
-            text: `Hey <@${userName}> !!!, Something went wrong, Sorry`,
+            text: `Hi <@${userName}> !!!, Something went wrong, Sorry`,
         });
     }
 });
