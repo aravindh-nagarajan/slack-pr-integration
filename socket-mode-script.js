@@ -47,6 +47,10 @@ app.command('/assignreviewer', async ({ command, ack, body, client, logger, say 
 
     const prNumber = Number(args[0]);
 
+    if (args.length === 1 && args[0] === 'ping') {
+        await say(`Hi <@${userName}> !!! Server is up and running.`);
+    }
+
     if (args.length === 2) {
         try {
             const reviewers = await assign(prNumber, args[1]);
