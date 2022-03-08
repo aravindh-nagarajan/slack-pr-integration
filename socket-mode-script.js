@@ -47,8 +47,11 @@ app.command('/assignreviewer', async ({ command, ack, body, client, logger, say 
 
     const prNumber = Number(args[0]);
 
+    // For testing purpose
     if (args.length === 1 && args[0] === 'ping') {
         await say(`Hi <@${userName}> !!! Server is up and running.`);
+
+        return;
     }
 
     if (args.length === 2) {
