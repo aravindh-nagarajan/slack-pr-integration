@@ -64,6 +64,7 @@ function getReviewers(author, level) {
     const group = authors.group1.includes(author) ? 'group1' : 'group2';
     const reviewGroup = reviewers[group];
     let prReviewers = [];
+    level = level.toLocaleLowerCase();
 
     switch(level) {
         case 'l1': {
