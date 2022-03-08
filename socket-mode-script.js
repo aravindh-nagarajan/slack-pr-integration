@@ -9,6 +9,22 @@ const app = new App({
     appToken: process.env.SLACK_APP_TOKEN,
 });
 
+const usernameHash = {
+    'shahabh3003': 'shahabh', 
+    'nisarnadaf43': 'nnadaf', 
+    'rajwantprajapati5791': 'rajawantp', 
+    'kondiparthi-sarath-avinetworks': 'kshanmukhasa',
+    'ratan-kumar-1991': 'kratan',
+    'gprasadhk': 'gprasadhk',
+    'harmeet-kr': 'hakaur',
+    'abhineshgour': 'agour',
+    'kumarsuraj27': 'skumar27',
+    'sarthakkapoor-dev': 'kapoorsa',
+    'vgohil-glb': 'vgohil',
+    'aravindh-nagarajan': 'aravindhn',
+    'aggarwalra': 'aggarwalra',
+};
+
 function getReviewersSlackIds(reviewers) {
     const ids = [];
 
@@ -16,7 +32,7 @@ function getReviewersSlackIds(reviewers) {
         ids.push(usernameHash[r]);
     });
 
-    return ids.join(' ');
+    return ids;
 }
 
 /**
@@ -36,6 +52,21 @@ app.command('/assignreviewer', async ({ command, ack, body, client, logger, say 
             const reviewers = await assign(prNumber, args[1]);
 
             await say(`Hey <@${userName}> !!! <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is submitted for ${args[1].toLocaleUpperCase()} Review. :tada:`);
+        
+            const reviewersIds = getReviewersSlackIds(reviewers);
+
+            reviewersIds.forEach(async r => {
+                try {
+                    await client.chat.postMessage({
+                        channel: `@${r}`,
+                        text: `Hey <@${r}>, <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is waiting for your review`,
+                    });
+                } catch(e) {
+                    logger.error(e);
+
+                    console.error(r);
+                }
+            });
         } catch(e) {
             logger.error(e);
 
@@ -138,11 +169,20 @@ app.view('level_selection', async ({ ack, view, client, body, logger }) => {
         const { 'level-select-action': levelSelection } = level;
         const selectedLevel = levelSelection.selected_option.value;
 
-        await assign(+prNumber, selectedLevel);
+        const reviewers = await assign(+prNumber, selectedLevel);
 
         await client.chat.postMessage({
             channel: channelId,
             text: `Hey <@${userName}> !!! <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is submitted for ${selectedLevel.toLocaleUpperCase()} Review. :tada:`,
+        });
+
+        const reviewersIds = getReviewersSlackIds(reviewers);
+
+        reviewersIds.forEach(async r => {
+            await client.chat.postMessage({
+                channel: `@${r}`,
+                text: `Hey <@${r}>, <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is waiting for your review`,
+            });
         });
     } catch(e) {
         logger.error(e);
