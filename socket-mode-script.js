@@ -35,7 +35,7 @@ function getReviewersSlackIds(reviewers) {
     return ids;
 }
 
-app.command('/reviewremind', async ({ command, ack, body, client, logger, say }) => {
+app.command('/remindreviewer', async ({ command, ack, body, client, logger, say }) => {
     const { text = '', user_name: userName } = command;
 
     await ack();
