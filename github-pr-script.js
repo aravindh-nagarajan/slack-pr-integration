@@ -160,13 +160,13 @@ async function getPendingReviewers(prNumber) {
         auth: oauth_token.trim(),
     });
 
-    const reviewers = await octokit.rest.pulls.listRequestedReviewers({
+    const { data: { users } } = await octokit.rest.pulls.listRequestedReviewers({
         owner: 'avinetworks',
         repo: "avi-dev",
         pull_number: prNumber,
     });
 
-    return reviewers;
+    return users.map(u => u.login);
 }
 
 module.exports = {

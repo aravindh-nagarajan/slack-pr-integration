@@ -1,5 +1,5 @@
 const { App } = require('@slack/bolt');
-const { assign } = require('./github-pr-script.js');
+const { assign, getPendingReviewers } = require('./github-pr-script.js');
 
 // Initialize App with tokens.
 const app = new App({
@@ -23,6 +23,7 @@ const usernameHash = {
     'vgohil-glb': 'vgohil',
     'aravindh-nagarajan': 'aravindhn',
     'aggarwalra': 'aggarwalra',
+    'alextsg': 'atseung',
 };
 
 function getReviewersSlackIds(reviewers) {
@@ -40,12 +41,10 @@ app.command('/remindreviewer', async ({ command, ack, body, client, logger, say 
 
     await ack();
 
-    const args = text.split(' ') || [];
-
-    const prNumber = Number(args[0]);
+    const prNumber = Number(text.trim());
 
     if (prNumber) {
-        const reviewers = await getPendingReviewers();
+        const reviewers = await getPendingReviewers(prNumber);
 
         const reviewersIds = getReviewersSlackIds(reviewers);
 
