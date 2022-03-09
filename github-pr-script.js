@@ -153,6 +153,23 @@ async function assign(prNumber, level = 'l1') {
     return reviewers;
 }
 
+async function getPendingReviewers(prNumber) {
+    oauth_token = fs.readFileSync('./auth.txt', 'utf8');
+
+    const octokit = new Octokit({
+        auth: oauth_token.trim(),
+    });
+
+    const reviewers = await octokit.rest.pulls.listRequestedReviewers({
+        owner: 'avinetworks',
+        repo: "avi-dev",
+        pull_number: prNumber,
+    });
+
+    return reviewers;
+}
+
 module.exports = {
     assign,
+    getPendingReviewers,
 };

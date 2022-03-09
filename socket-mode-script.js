@@ -35,15 +35,46 @@ function getReviewersSlackIds(reviewers) {
     return ids;
 }
 
+app.command('/reviewremind', async ({ command, ack, body, client, logger, say }) => {
+    const { text = '', user_name: userName } = command;
+
+    await ack();
+
+    const args = text.split(' ') || [];
+
+    const prNumber = Number(args[0]);
+
+    if (prNumber) {
+        const reviewers = await getPendingReviewers();
+
+        const reviewersIds = getReviewersSlackIds(reviewers);
+
+        reviewersIds.forEach(async r => {
+            try {
+                await client.chat.postMessage({
+                    channel: `@${r}`,
+                    text: `Hi <@${r}>, Gentle Reminder: <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is waiting for your review.`,
+                });
+            } catch(e) {
+                logger.error(e);
+    
+                console.error(r);
+            }
+        });
+
+        await say(`Hi <@${userName}> !!! Reminder sent.`);
+    }
+});
+
 /**
  * Handler for assignreviewer command.
  */
 app.command('/assignreviewer', async ({ command, ack, body, client, logger, say }) => {
-    const { text, user_name: userName } = command;
+    const { text = '', user_name: userName } = command;
 
     await ack();
 
-    const args = text.split(' ');
+    const args = text.split(' ') || [];
 
     const prNumber = Number(args[0]);
 
@@ -66,7 +97,7 @@ app.command('/assignreviewer', async ({ command, ack, body, client, logger, say 
                 try {
                     await client.chat.postMessage({
                         channel: `@${r}`,
-                        text: `Hi <@${r}>, <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is waiting for your review`,
+                        text: `Hi <@${r}>, <https://github.com/avinetworks/avi-dev/pull/${prNumber}|#${prNumber}> is waiting for your review.`,
                     });
                 } catch(e) {
                     logger.error(e);
