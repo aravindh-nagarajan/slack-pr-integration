@@ -9,8 +9,8 @@ const authors = {
         'nisarnadaf43', 
         'rajwantprajapati5791', 
         'kondiparthi-sarath-avinetworks',
-        'ratan-kumar-1991',
         'gprasadhk',
+        'nitesh-kesarkar-globant',
     ],
     group2: [
         'harmeet-kr',
@@ -23,12 +23,12 @@ const authors = {
 
 const reviewers = {
     group1: {
-        l1: ['nisarnadaf43', 'rajwantprajapati5791', 'ratan-kumar-1991'],
+        l1: ['nisarnadaf43', 'rajwantprajapati5791', 'nitesh-kesarkar-globant'],
         l2: ['kondiparthi-sarath-avinetworks', 'gprasadhk'],
         l3: 'aravindh-nagarajan',
     },
     group2: {
-        l1: ['abhineshgour', 'sarthakkapoor-dev', 'vgohil-glb'],
+        l1: ['abhineshgour', 'sarthakkapoor-dev', 'vgohil-glb', 'shreyasghare-globant'],
         l2: ['harmeet-kr', 'kumarsuraj27'],
         l3: 'aggarwalra',
     },

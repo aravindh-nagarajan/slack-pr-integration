@@ -24,6 +24,8 @@ const usernameHash = {
     'aravindh-nagarajan': 'aravindhn',
     'aggarwalra': 'aggarwalra',
     'alextsg': 'atseung',
+    'nitesh-kesarkar-globant': 'kesarkarn',
+    'shreyasghare-globant': 'sghare',
 };
 
 function getReviewersSlackIds(reviewers) {
