@@ -11,6 +11,7 @@ const authors = {
         'kondiparthi-sarath-avinetworks',
         'gprasadhk',
         'nitesh-kesarkar-globant',
+        'hitesh-mandav',
     ],
     group2: [
         'harmeet-kr',
@@ -23,7 +24,7 @@ const authors = {
 
 const reviewers = {
     group1: {
-        l1: ['nisarnadaf43', 'rajwantprajapati5791', 'nitesh-kesarkar-globant'],
+        l1: ['nisarnadaf43', 'rajwantprajapati5791', 'nitesh-kesarkar-globant', 'hitesh-mandav'],
         l2: ['kondiparthi-sarath-avinetworks', 'gprasadhk'],
         l3: 'aravindh-nagarajan',
     },
