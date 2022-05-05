@@ -26,12 +26,12 @@ const reviewers = {
     group1: {
         l1: ['nisarnadaf43', 'rajwantprajapati5791', 'nitesh-kesarkar-globant', 'hitesh-mandav'],
         l2: ['kondiparthi-sarath-avinetworks', 'gprasadhk'],
-        l3: 'aravindh-nagarajan',
+        l3: ['aravindh-nagarajan', 'vmadhugiri'],
     },
     group2: {
         l1: ['abhineshgour', 'sarthakkapoor-dev', 'vgohil-glb', 'shreyasghare-globant'],
         l2: ['harmeet-kr', 'kumarsuraj27'],
-        l3: 'aggarwalra',
+        l3: ['aggarwalra', 'vmadhugiri'],
     },
 };
 
@@ -81,7 +81,7 @@ function getReviewers(author, level) {
         }
 
         case 'l3': {
-            prReviewers.push(reviewGroup.l3);
+            prReviewers.push(...reviewGroup.l3);
 
             break;
         }

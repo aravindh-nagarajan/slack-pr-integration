@@ -27,6 +27,7 @@ const usernameHash = {
     'nitesh-kesarkar-globant': 'kesarkarn',
     'shreyasghare-globant': 'sghare', 
     'hitesh-mandav' : 'hiteshm',
+    'vmadhugiri': 'Vijaykumar_Madhugiri',
 };
 
 function getReviewersSlackIds(reviewers) {
