@@ -34,7 +34,8 @@ function getReviewersSlackIds(reviewers) {
     const ids = [];
 
     reviewers.forEach(r => {
-        ids.push(usernameHash[r]);
+        if (r !== 'vmadhugiri') // issue with vijay's slack handle
+            ids.push(usernameHash[r]);
     });
 
     return ids;
