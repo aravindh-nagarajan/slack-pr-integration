@@ -70,13 +70,13 @@ function getReviewers(author, level) {
 
     switch(level) {
         case 'l1': {
-            prReviewers.push(...reviewGroup.l1);
+            prReviewers = getL1Reviewers(author, reviewGroup);
 
             break;
         }
 
         case 'l2': {
-            prReviewers.push(...reviewGroup.l2);
+            prReviewers = getL2Reviewers(author, reviewGroup);
 
             break;
         }
@@ -104,13 +104,10 @@ function getReviewers(author, level) {
  */
 function getL1Reviewers(author, reviewGroup) {
     const prReviewers = [];
-    let count = 0;
 
     reviewGroup.l1.forEach(r => {
-        if (r !== author && count <= 2) {
+        if (r !== author) {
             prReviewers.push(r);
-
-            count++;
         }
     });
 
