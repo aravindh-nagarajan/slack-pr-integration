@@ -14,7 +14,6 @@ const usernameHash = {
     'nisarnadaf43': 'nnadaf', 
     'rajwantprajapati5791': 'rajawantp', 
     'kondiparthi-sarath-avinetworks': 'kshanmukhasa',
-    'ratan-kumar-1991': 'kratan',
     'gprasadhk': 'gprasadhk',
     'harmeet-kr': 'hakaur',
     'abhineshgour': 'agour',
@@ -28,6 +27,7 @@ const usernameHash = {
     'shreyasghare-globant': 'sghare', 
     'hitesh-mandav' : 'hiteshm',
     'vmadhugiri': 'Vijaykumar_Madhugiri',
+    'kmanideep00': 'kmanideep',
 };
 
 function getReviewersSlackIds(reviewers) {

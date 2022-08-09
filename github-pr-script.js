@@ -19,17 +19,18 @@ const authors = {
         'kumarsuraj27',
         'sarthakkapoor-dev',
         'vgohil-glb',
+        'kmanideep00',
     ]
 };
 
 const reviewers = {
     group1: {
-        l1: ['nisarnadaf43', 'rajwantprajapati5791', 'nitesh-kesarkar-globant', 'hitesh-mandav'],
+        l1: ['nisarnadaf43', 'rajwantprajapati5791', 'nitesh-kesarkar-globant', 'hitesh-mandav', 'shahabh3003'],
         l2: ['kondiparthi-sarath-avinetworks', 'gprasadhk'],
         l3: ['aravindh-nagarajan', 'vmadhugiri'],
     },
     group2: {
-        l1: ['abhineshgour', 'sarthakkapoor-dev', 'vgohil-glb', 'shreyasghare-globant'],
+        l1: ['abhineshgour', 'sarthakkapoor-dev', 'vgohil-glb', 'shreyasghare-globant', 'kmanideep00'],
         l2: ['harmeet-kr', 'kumarsuraj27'],
         l3: ['aggarwalra', 'vmadhugiri'],
     },
@@ -69,13 +70,13 @@ function getReviewers(author, level) {
 
     switch(level) {
         case 'l1': {
-            prReviewers = getL1Reviewers(author, reviewGroup);
+            prReviewers.push(...reviewGroup.l1);
 
             break;
         }
 
         case 'l2': {
-            prReviewers = getL2Reviewers(author, reviewGroup);
+            prReviewers.push(...reviewGroup.l2);
 
             break;
         }
